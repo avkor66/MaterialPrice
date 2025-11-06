@@ -26,16 +26,11 @@ spring:
 
 app:
   services:
-    application:
-      url: ${APPLICATION_SERVICE_HOST:http://localhost:8084}
-    user:
-      url: ${USER_SERVICE_HOST:http://localhost:8081}
-    materialPrice:
-      url: ${MATERIAL_PRICE_SERVICE_HOST:http://localhost:8082}
-    costCalculation:
-      url: ${COST_CALCULATION_SERVICE_HOST:http://localhost:8083}
-    frontend:
-      url: ${FRONTEND_CLIENT_URL:https://msametiz96.ru}
+    application: ${APPLICATION_SERVICE_HOST:http://localhost:8084}
+    user: ${USER_SERVICE_HOST:http://localhost:8081}
+    materialPrice: ${MATERIAL_PRICE_SERVICE_HOST:http://localhost:8082}
+    costCalculation: ${COST_CALCULATION_SERVICE_HOST:http://localhost:8083}
+    frontend: ${FRONTEND_CLIENT_URL:https://msametiz96.ru}
 
 logging:
   level:
