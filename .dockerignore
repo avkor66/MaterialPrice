@@ -1,0 +1,19 @@
+target/
+*.log
+*.tmp
+*.class
+*.jar
+*.war
+*.iml
+.idea/
+.settings/
+.vscode/
+.DS_Store
+*.swp
+
+# Git
+.git
+.gitignore
+
+# Maven
+.mvn/
