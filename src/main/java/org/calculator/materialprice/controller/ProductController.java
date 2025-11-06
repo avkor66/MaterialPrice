@@ -17,18 +17,6 @@ import java.util.Map;
 public class ProductController {
     private ProductService productService;
 
-    @GetMapping("/health_check")
-    public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("MaterialPrice Check OK");
-    }
-
-    @PostMapping("/upload-product-data")
-    public ResponseEntity<?> updateProductsData(@RequestParam("file") MultipartFile file) {
-        this.productService.saveProductsToDatabase(file);
-        return ResponseEntity
-                .ok(Map.of("Message" , " Products data uploaded and saved to database successfully"));
-    }
-
     @GetMapping
     public ResponseEntity<List<Product>> getProducts() {
         return new ResponseEntity<>(productService.getProducts(), HttpStatus.FOUND);
@@ -37,5 +25,12 @@ public class ProductController {
     @GetMapping("/product")
     public ResponseEntity<List<Product>> getProductsByProductName(@RequestParam(value = "name") String productName) {
         return new ResponseEntity<>(productService.getProductsByName(productName), HttpStatus.FOUND);
+    }
+
+    @PostMapping("/upload-product-data")
+    public ResponseEntity<?> updateProductsData(@RequestParam("file") MultipartFile file) {
+        this.productService.saveProductsToDatabase(file);
+        return ResponseEntity
+                .ok(Map.of("Message" , " Products data uploaded and saved to database successfully"));
     }
 }

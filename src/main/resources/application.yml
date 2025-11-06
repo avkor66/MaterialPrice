@@ -1,0 +1,43 @@
+server:
+  port: ${MATERIAL_PRICE_PORT:8082}
+
+spring:
+  application:
+    name: MaterialPrice
+
+  datasource:
+    url: jdbc:mysql://${MATERIAL_PRICE_MYSQL_DB_HOST:localhost}:${MATERIAL_PRICE_MYSQL_DB_PORT:3306}/${MATERIAL_PRICE_MYSQL_DB_COLLECTION:material_db}
+    username: ${MATERIAL_PRICE_MYSQL_DB_USER:appuser}
+    password: ${MATERIAL_PRICE_MYSQL_DB_PASSWORD:apppass}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+app:
+  services:
+    application:
+      url: ${APPLICATION_SERVICE_HOST:http://localhost:8084}
+    user:
+      url: ${USER_SERVICE_HOST:http://localhost:8081}
+    materialPrice:
+      url: ${MATERIAL_PRICE_SERVICE_HOST:http://localhost:8082}
+    costCalculation:
+      url: ${COST_CALCULATION_SERVICE_HOST:http://localhost:8083}
+    frontend:
+      url: ${FRONTEND_CLIENT_URL:https://msametiz96.ru}
+
+logging:
+  level:
+    com.calculator: DEBUG
+    org.springframework.web: INFO

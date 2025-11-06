@@ -12,7 +12,7 @@ public class MetalParser {
                                                                         "|(\\d+мм)" +                                                                   // 2мм, 3мм
                                                                         "|(ф\\d+[.,]?\\d*мм)" +                                                         // ф3мм, ф4 мм
                                                                         "|(?<![A-Za-zА-Яа-я])\\d{1,3}(?![A-Za-zА-Яа-я0-9])");                           // одиночные числа: 27, 8, 250
-    private static final Pattern STEEL_PATTERN = Pattern.compile("ст[0-9А-ЯХСНДГспк\\-]*|нерж\\.?|А500С|А240С", Pattern.CASE_INSENSITIVE);
+    private static final Pattern STEEL_PATTERN = Pattern.compile("ст(?=[0-9])[0-9А-ЯХСНДГспк\\-]*|нерж\\.?|оцинк\\.?|А500С|А240С", Pattern.CASE_INSENSITIVE);
 
     public static MetalProduct parseLine(String line) {
         MetalProduct product = new MetalProduct();
