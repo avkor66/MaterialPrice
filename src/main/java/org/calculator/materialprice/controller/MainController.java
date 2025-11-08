@@ -1,16 +1,20 @@
 package org.calculator.materialprice.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/")
 public class MainController {
 
+    record HealthResponse(String status) {}
+
     @GetMapping("/health_check")
-    public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("MaterialPrice Check OK");
+    public ResponseEntity<HealthResponse> healthCheck() {
+        return ResponseEntity.ok(new HealthResponse("MaterialPrice Check OK"));
     }
 }
