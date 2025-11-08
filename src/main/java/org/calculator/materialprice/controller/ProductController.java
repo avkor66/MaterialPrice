@@ -2,7 +2,10 @@ package org.calculator.materialprice.controller;
 
 import lombok.AllArgsConstructor;
 import org.calculator.materialprice.domain.Product;
+import org.calculator.materialprice.repository.ProductRepository;
 import org.calculator.materialprice.service.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +19,12 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/products")
 public class ProductController {
+    private final ProductRepository productRepository;
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<Product>> getProducts() {
-        return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
+    public Page<Product> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     @GetMapping("/product")
