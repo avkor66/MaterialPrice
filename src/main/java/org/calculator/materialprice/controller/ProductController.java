@@ -20,12 +20,12 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<Product>> getProducts() {
-        return new ResponseEntity<>(productService.getProducts(), HttpStatus.FOUND);
+        return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/product")
     public ResponseEntity<List<Product>> getProductsByProductName(@RequestParam(value = "name") String productName) {
-        return new ResponseEntity<>(productService.getProductsByName(productName), HttpStatus.FOUND);
+        return new ResponseEntity<>(productService.getProductsByName(productName), HttpStatus.OK);
     }
 
     @PostMapping("/upload-product-data")
