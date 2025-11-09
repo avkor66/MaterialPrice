@@ -1,6 +1,5 @@
 package org.calculator.materialprice.controller;
 
-import lombok.AllArgsConstructor;
 import org.calculator.materialprice.domain.Product;
 import org.calculator.materialprice.repository.ProductRepository;
 import org.calculator.materialprice.service.ProductService;
@@ -15,16 +14,30 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/products")
 public class ProductController {
     private final ProductRepository productRepository;
     private ProductService productService;
 
+    public ProductController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
     @GetMapping
-    public Page<Product> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public ResponseEntity<Page<Product>> getAllProducts(
+            Pageable pageable,
+            @RequestParam(required = false) String search) {
+
+        Page<Product> page;
+
+        if (search != null && !search.isEmpty()) {
+            page = productRepository.findByProductNameContainingIgnoreCase(search, pageable);
+        } else {
+            page = productRepository.findAll(pageable);
+        }
+
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/product")
