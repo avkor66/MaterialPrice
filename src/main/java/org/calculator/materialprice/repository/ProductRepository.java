@@ -1,16 +1,19 @@
 package org.calculator.materialprice.repository;
 
-import org.calculator.materialprice.domain.Product;
+import org.calculator.materialprice.domain.ProductPrice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByProductName(String productName);
+@Repository
+public interface ProductRepository extends JpaRepository<ProductPrice, UUID> {
+    List<ProductPrice> findByProductName(String productName);
 
-    Page<Product> findAll(Pageable pageable);
+    Page<ProductPrice> findAll(Pageable pageable);
 
-    Page<Product> findByProductNameContainingIgnoreCase(String search, Pageable pageable);
+    Page<ProductPrice> findByProductNameContainingIgnoreCase(String search, Pageable pageable);
 }

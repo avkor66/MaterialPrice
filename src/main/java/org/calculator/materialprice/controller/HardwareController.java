@@ -11,6 +11,7 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/hardware/washers")
 public class HardwareController {
 

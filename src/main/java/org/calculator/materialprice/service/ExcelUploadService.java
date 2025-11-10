@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.calculator.materialprice.domain.MetalProduct;
-import org.calculator.materialprice.domain.Product;
+import org.calculator.materialprice.domain.ProductPrice;
 import org.calculator.materialprice.util.MetalParser;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,8 +41,8 @@ public class ExcelUploadService {
             default -> "";
         };
     }
-    public static List<Product> getProductsDataFromExcel(InputStream inputStream) throws IOException {
-        List<Product> products = new ArrayList<>();
+    public static List<ProductPrice> getProductsDataFromExcel(InputStream inputStream) throws IOException {
+        List<ProductPrice> productPrices = new ArrayList<>();
 
         XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
         XSSFSheet sheet = workbook.getSheetAt(0);
@@ -59,35 +59,35 @@ public class ExcelUploadService {
             if (contentCell == null || contentCell.toString().trim().isEmpty()) {
                 break;
             }
-            Product product = new Product();
+            ProductPrice productPrice = new ProductPrice();
             while (cellIterator.hasNext()) {
                  Cell cell = cellIterator.next();
                  switch (cellIndex) {
                     case 1 -> {
-                        product.setContent(getCellValueAsString(cell));
-                        MetalProduct parser = MetalParser.parseLine(product.getContent());
+                        productPrice.setContent(getCellValueAsString(cell));
+                        MetalProduct parser = MetalParser.parseLine(productPrice.getContent());
 
-                        product.setProductName(parser.name);
-                        product.setDimensions(parser.size);
-                        product.setSteelGrade(parser.steelGrade);
-                        product.setComment(parser.comment);
+                        productPrice.setProductName(parser.name);
+                        productPrice.setDimensions(parser.size);
+                        productPrice.setSteelGrade(parser.steelGrade);
+                        productPrice.setComment(parser.comment);
                     }
-                    case 2 -> product.setStandard(getCellValueAsString(cell));
-                    case 3 -> product.setParameter(getCellValueAsString(cell));
-                    case 4 -> product.setWeight(getCellValueAsString(cell));
-                    case 5 -> product.setNumberOfPieces(getCellValueAsString(cell));
-                    case 6 -> product.setQuantityWeight(getCellValueAsString(cell));
-                    case 7 -> product.setUnitOfMeasurement(getCellValueAsString(cell));
-                    case 8 -> product.setPrice(getCellValueAsString(cell));
-                    case 9 -> product.setNote(getCellValueAsString(cell));
-                    case 10 -> product.setLinkPhoto(getCellValueAsString(cell));
+                    case 2 -> productPrice.setStandard(getCellValueAsString(cell));
+                    case 3 -> productPrice.setParameter(getCellValueAsString(cell));
+                    case 4 -> productPrice.setWeight(getCellValueAsString(cell));
+                    case 5 -> productPrice.setNumberOfPieces(getCellValueAsString(cell));
+                    case 6 -> productPrice.setQuantityWeight(getCellValueAsString(cell));
+                    case 7 -> productPrice.setUnitOfMeasurement(getCellValueAsString(cell));
+                    case 8 -> productPrice.setPrice(getCellValueAsString(cell));
+                    case 9 -> productPrice.setNote(getCellValueAsString(cell));
+                    case 10 -> productPrice.setLinkPhoto(getCellValueAsString(cell));
                     default -> {
                     }
                 }
                 cellIndex++;
             }
-            products.add(product);
+            productPrices.add(productPrice);
         }
-        return products;
+        return productPrices;
     }
 }

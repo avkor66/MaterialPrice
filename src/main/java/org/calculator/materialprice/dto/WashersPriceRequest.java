@@ -6,11 +6,12 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 public class WashersPriceRequest {
     private String species;
     private Number outerDiameter;
     private String diameter;
     private String steelGrade;
     private Number quantity;
+    private Number height;
+    private Number sawCut;
 }

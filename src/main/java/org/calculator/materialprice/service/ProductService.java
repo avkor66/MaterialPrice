@@ -1,7 +1,7 @@
 package org.calculator.materialprice.service;
 
 import lombok.AllArgsConstructor;
-import org.calculator.materialprice.domain.Product;
+import org.calculator.materialprice.domain.ProductPrice;
 import org.calculator.materialprice.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,19 +17,19 @@ public class ProductService {
     public void saveProductsToDatabase(MultipartFile file) {
         if(ExcelUploadService.isValidExcelFile(file)) {
             try {
-                List<Product> products = ExcelUploadService.getProductsDataFromExcel(file.getInputStream());
-                this.productRepository.saveAll(products);
+                List<ProductPrice> productPrices = ExcelUploadService.getProductsDataFromExcel(file.getInputStream());
+                this.productRepository.saveAll(productPrices);
             } catch (IOException e) {
                 throw new IllegalArgumentException("The file is not a valid excel file");
             }
         }
     }
 
-    public List<Product> getProducts() {
+    public List<ProductPrice> getProducts() {
         return this.productRepository.findAll();
     }
 
-    public List<Product> getProductsByName(String productName) {
+    public List<ProductPrice> getProductsByName(String productName) {
         return this.productRepository.findByProductName(productName);
     }
 }

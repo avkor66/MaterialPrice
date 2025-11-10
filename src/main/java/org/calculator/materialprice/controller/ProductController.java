@@ -1,6 +1,6 @@
 package org.calculator.materialprice.controller;
 
-import org.calculator.materialprice.domain.Product;
+import org.calculator.materialprice.domain.ProductPrice;
 import org.calculator.materialprice.repository.ProductRepository;
 import org.calculator.materialprice.service.ProductService;
 import org.springframework.data.domain.Page;
@@ -18,18 +18,19 @@ import java.util.Map;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductRepository productRepository;
-    private ProductService productService;
+    private final ProductService productService;
 
-    public ProductController(ProductRepository productRepository) {
+    public ProductController(ProductRepository productRepository, ProductService productService) {
         this.productRepository = productRepository;
+        this.productService = productService;
     }
 
     @GetMapping
-    public ResponseEntity<Page<Product>> getAllProducts(
+    public ResponseEntity<Page<ProductPrice>> getAllProducts(
             Pageable pageable,
             @RequestParam(required = false) String search) {
 
-        Page<Product> page;
+        Page<ProductPrice> page;
 
         if (search != null && !search.isEmpty()) {
             page = productRepository.findByProductNameContainingIgnoreCase(search, pageable);
@@ -41,7 +42,7 @@ public class ProductController {
     }
 
     @GetMapping("/product")
-    public ResponseEntity<List<Product>> getProductsByProductName(@RequestParam(value = "name") String productName) {
+    public ResponseEntity<List<ProductPrice>> getProductsByProductName(@RequestParam(value = "name") String productName) {
         return new ResponseEntity<>(productService.getProductsByName(productName), HttpStatus.OK);
     }
 
