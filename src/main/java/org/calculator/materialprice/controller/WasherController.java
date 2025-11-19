@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("details/washer")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class WasherController {
 
     private final SteelGradeService steelGradeService;
