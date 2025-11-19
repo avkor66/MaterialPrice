@@ -9,24 +9,63 @@ import java.util.*;
 @Entity
 @Getter
 @Setter
-@ToString(exclude = {"washerSize", "steelGrade"})
-@EqualsAndHashCode(exclude = {"washerSize", "steelGrade"})@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "washer_standard")
 public class CatalogWasherStandards {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     private String standard;
     private String title;
     private String description;
     private String type;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "washerStandardSize", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CatalogWasherSizes> washerSize = new ArrayList<>();
+    @Column(name = "link")
+    private String link;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "washerStandard")
-    private Set<CatalogSteelGrades> steelGrade = new HashSet<>();
+    @Column(name = "file_name")
+    private String file;
+
+    @Column(name = "image")
+    private String image;
+
+    @ManyToMany
+    @JoinTable(
+            name = "washer_grade",
+            joinColumns = {@JoinColumn(name = "washer_id")},
+            inverseJoinColumns = {@JoinColumn(name = "grade_id")}
+    )
+    private Set<SteelGrades> grades = new HashSet<>();
+
+    @OneToMany(mappedBy = "washerStandard", cascade = CascadeType.ALL)
+    @Column(name = "washer_sizes")
+    private Set<CatalogWasherSizes> washerSizes = new HashSet<>();
+
+    public void addWasherSizeToStandard(CatalogWasherSizes washerSize) {
+        this.washerSizes.add(washerSize);
+        washerSize.setWasherStandard(this);
+    }
+
+    public CatalogWasherStandards(String standard, String title, String description, String type, String link, String file, String image) {
+        this.standard = standard;
+        this.title = title;
+        this.description = description;
+        this.type = type;
+        this.link = link;
+        this.file = file;
+        this.image = image;
+    }
+
+
+    public void addGrade(SteelGrades grade) {
+        this.grades.add(grade);
+    }
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "washerStandardSize", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<CatalogWasherSizes> washerSize = new ArrayList<>();
+//
+//    @JsonIgnore
+//    @ManyToMany(mappedBy = "washerStandard")
+//    private Set<CatalogSteelGrades> steelGrade = new HashSet<>();
 }

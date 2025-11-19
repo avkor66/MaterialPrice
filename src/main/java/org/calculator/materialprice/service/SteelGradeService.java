@@ -2,7 +2,7 @@ package org.calculator.materialprice.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.calculator.materialprice.domain.CatalogSteelGrades;
+import org.calculator.materialprice.domain.SteelGrades;
 import org.calculator.materialprice.domain.CatalogWasherStandards;
 import org.calculator.materialprice.repository.SteelGradeRepository;
 import org.calculator.materialprice.repository.WasherStandardRepository;
@@ -24,34 +24,34 @@ public class SteelGradeService {
         this.washerStandardRepository = washerStandardRepository;
     }
 
-    public CatalogSteelGrades createSteelGrade(CatalogSteelGrades catalogSteelGrades) {
-        return repository.save(catalogSteelGrades);
+    public SteelGrades createSteelGrade(SteelGrades steelGrades) {
+        return repository.save(steelGrades);
     }
 
-    public CatalogSteelGrades findSteelGradeById(UUID id) {
+    public SteelGrades findSteelGradeById(UUID id) {
         return repository.findById(id).orElse(null);
     }
 
-    public CatalogSteelGrades getSteelGrade(String steelGrade) {
-        return repository.findBySteelGrade(steelGrade);
+    public SteelGrades getSteelGrade(String steelGrade) {
+        return repository.findBySteelGradeName(steelGrade);
     }
 
-    public List<CatalogSteelGrades> getAllSteelGrades() {
+    public List<SteelGrades> getAllSteelGrades() {
         return repository.findAll();
     }
 
     @Transactional
-    public CatalogSteelGrades linkStandardToSteelGrade(UUID steelGradeId, UUID standardId) {
+    public SteelGrades linkStandardToSteelGrade(UUID steelGradeId, UUID standardId) {
 
-        CatalogSteelGrades steelGrade = steelGradeRepository.findById(steelGradeId)
+        SteelGrades steelGrade = steelGradeRepository.findById(steelGradeId)
                 .orElseThrow(() -> new EntityNotFoundException("Марка стали не найдена."));
 
         CatalogWasherStandards standard = washerStandardRepository.findById(standardId)
                 .orElseThrow(() -> new EntityNotFoundException("Стандарт не найден."));
 
-        steelGrade.getWasherStandard().add(standard);
+        steelGrade.getWashers().add(standard);
 
-        standard.getSteelGrade().add(steelGrade);
+        standard.getGrades().add(steelGrade);
 
         return steelGradeRepository.save(steelGrade);
     }

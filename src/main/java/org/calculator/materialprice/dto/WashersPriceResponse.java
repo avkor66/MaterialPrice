@@ -3,13 +3,17 @@ package org.calculator.materialprice.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 public class WashersPriceResponse {
     private String species;
     private String steelGrade;
-    private Double pricePerKg;
-    private Double blankWeightKg;
-    private Double blankLengthKg;
-    private Double totalPrice;
+    private Boolean isSteelGradeAllowed;
+    private BigDecimal pricePerKg;
+    private BigDecimal blankWeightKg;
+    private BigDecimal blankLengthMM;
+    private BigDecimal blankWeightPerMM;
+    private BigDecimal totalPrice;
 }

@@ -9,8 +9,6 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@ToString(exclude = {"washerStandardSize"}) // Исключаем поле, которое может быть LAZY
-@EqualsAndHashCode(exclude = {"washerStandardSize"}) // Исключаем поле, которое может быть LAZY
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Table(name = "washer_size")
@@ -26,8 +24,24 @@ public class CatalogWasherSizes {
     private BigDecimal width_b;
     private String purpose;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "washer_standard_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "washer_standard_id")
+    private CatalogWasherStandards washerStandard;
 
-    private CatalogWasherStandards washerStandardSize;
+    public CatalogWasherSizes(String size, Double nominal_thread_diameter, Double inner_diameter, Double outer_diameter, Double width_b, Double thickness, String purpose
+    ) {
+        this.size = size;
+        this.nominal_thread_diameter = BigDecimal.valueOf(nominal_thread_diameter);
+        this.inner_diameter = BigDecimal.valueOf(inner_diameter);
+        this.outer_diameter = outer_diameter == null ? null : BigDecimal.valueOf(outer_diameter);
+        this.thickness = BigDecimal.valueOf(thickness);
+        this.width_b = width_b == null ? null : BigDecimal.valueOf(width_b);
+        this.purpose = purpose;
+    };
+
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "washer_standard_id", nullable = false)
+//
+//    private CatalogWasherStandards washerStandardSize;
 }

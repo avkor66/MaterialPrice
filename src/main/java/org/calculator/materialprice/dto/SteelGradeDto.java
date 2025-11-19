@@ -1,5 +1,7 @@
 package org.calculator.materialprice.dto;
 
+import lombok.Data;
+
 import java.util.Set;
 import java.util.UUID;
 

@@ -1,6 +1,6 @@
 package org.calculator.materialprice.controller;
 
-import org.calculator.materialprice.domain.CatalogSteelGrades;
+import org.calculator.materialprice.domain.SteelGrades;
 import org.calculator.materialprice.domain.CatalogWasherSizes;
 import org.calculator.materialprice.domain.CatalogWasherStandards;
 import org.calculator.materialprice.dto.SteelGradeCreationRequest;
@@ -66,19 +66,19 @@ public class WasherController {
         washerSizes.setThickness(request.getThickness());
         washerSizes.setWidth_b(request.getWidth_b());
         washerSizes.setPurpose(request.getPurpose());
-        washerSizes.setWasherStandardSize(standard);
+        washerSizes.setWasherStandard(standard);
 
         CatalogWasherSizes savedResult = washerSizeService.createWasherSize(washerSizes);
         return new ResponseEntity<>(savedResult, HttpStatus.CREATED);
     }
 
     @PostMapping("/steel-grade")
-    public ResponseEntity<CatalogSteelGrades> createWasherSize(
+    public ResponseEntity<SteelGrades> createWasherSize(
             @RequestBody SteelGradeCreationRequest request
     ) {
-        CatalogSteelGrades steelGrade = new CatalogSteelGrades();
-        steelGrade.setSteelGrade(request.getSteel_grade());
-        CatalogSteelGrades savedResult = steelGradeService.createSteelGrade(steelGrade);
+        SteelGrades steelGrade = new SteelGrades();
+        steelGrade.setSteelGradeName(request.getSteel_grade());
+        SteelGrades savedResult = steelGradeService.createSteelGrade(steelGrade);
 
         steelGradeService.linkStandardToSteelGrade(savedResult.getId(), request.getWasher_standard_id());
 
@@ -86,7 +86,7 @@ public class WasherController {
     }
 
     @PostMapping("/washer-steel")
-    public ResponseEntity<CatalogSteelGrades> washerJoinSteel(
+    public ResponseEntity<SteelGrades> washerJoinSteel(
             @RequestBody WasherSteelRequest request
     ) {
         return new ResponseEntity<>(

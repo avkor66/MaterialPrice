@@ -16,4 +16,11 @@ public interface ProductRepository extends JpaRepository<ProductPrice, UUID> {
     Page<ProductPrice> findAll(Pageable pageable);
 
     Page<ProductPrice> findByProductNameContainingIgnoreCase(String search, Pageable pageable);
+
+    List<ProductPrice> findTopByProductNameAndDimensionsAndSteelGradeAndParameterOrderByPriceAsc(
+            String productName,
+            String dimensions,
+            String steelGrade,
+            String parameter
+    );
 }

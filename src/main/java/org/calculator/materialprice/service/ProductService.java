@@ -32,4 +32,8 @@ public class ProductService {
     public List<ProductPrice> getProductsByName(String productName) {
         return this.productRepository.findByProductName(productName);
     }
+
+    public List<ProductPrice> getProductsByHer(String productName, String dimensions, String steelGrade, String parameter) {
+        return this.productRepository.findTopByProductNameAndDimensionsAndSteelGradeAndParameterOrderByPriceAsc(productName, dimensions, steelGrade, parameter);
+    }
 }
