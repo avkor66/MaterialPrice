@@ -1,11 +1,13 @@
 package org.calculator.materialprice.service;
 
 import org.calculator.materialprice.domain.CatalogWasherSizes;
+import org.calculator.materialprice.dto.WasherSizeDto;
 import org.calculator.materialprice.repository.WasherSizeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class WasherSizeService {
@@ -27,7 +29,9 @@ public class WasherSizeService {
         return repository.findBySize(size);
     }
 
-    public List<CatalogWasherSizes> getAllWasherSizes() {
-        return repository.findAll();
+    public List<WasherSizeDto> getAllWasherSizes() {
+        return repository.findAll().stream()
+                .map(WasherSizeDto::new)
+                .collect(Collectors.toList());
     }
 }

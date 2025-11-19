@@ -28,7 +28,7 @@ public class SteelGrades {
     private String description;
 
     @Column(name = "substitutes")
-    private String substitutes; // Хранение списка заменителей как строки (разделенных запятыми)
+    private String substitutes;
 
     @Column(name = "weldability")
     private String weldability;
@@ -39,13 +39,17 @@ public class SteelGrades {
     @Column(name = "density")
     private Double density;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "grade_standard",
-//            joinColumns = {@JoinColumn(name = "grade_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "standard_id")}
-//    )
-//    private Set<SteelStandard> standards = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "standard_id")
+    private SteelStandard standard;
+
+    @ManyToMany
+    @JoinTable(
+            name = "washer_grade",
+            joinColumns = {@JoinColumn(name = "grade_id")},
+            inverseJoinColumns = {@JoinColumn(name = "washer_id")}
+    )
+    private Set<CatalogWasherStandards> washers = new HashSet<>();
 
     public SteelGrades(String steelGradeName) {
         this.steelGradeName = steelGradeName;
@@ -65,36 +69,6 @@ public class SteelGrades {
         this.application = application;
         this.density = density;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "standard_id")
-    private SteelStandard standard;
-
-    @ManyToMany
-    @JoinTable(
-            name = "washer_grade",
-            joinColumns = {@JoinColumn(name = "grade_id")},
-            inverseJoinColumns = {@JoinColumn(name = "washer_id")}
-    )
-    private Set<CatalogWasherStandards> washers = new HashSet<>();
-
-
-//    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "steel_standard_id", nullable = false)
-//    private SteelStandard steelStandard;
-//
-//
-//    @JsonIgnore
-//    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-//    @JoinTable(
-//            name = "washer_steel",
-//            joinColumns = @JoinColumn(name = "steel_grade_id"), // Внешний ключ, указывающий на эту таблицу (SteelGrade)
-//            inverseJoinColumns = @JoinColumn(name = "washer_standard_id") // Внешний ключ, указывающий на связанную таблицу (CatalogWasherStandards)
-//    )
-//    private Set<CatalogWasherStandards> washerStandard = new HashSet<>();
-//    // ------------------------------------------
-
 }
 
 

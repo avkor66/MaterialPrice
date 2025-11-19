@@ -3,9 +3,9 @@ package org.calculator.materialprice.service;
 import jakarta.transaction.Transactional;
 import org.calculator.materialprice.domain.SteelGrades;
 import org.calculator.materialprice.domain.SteelStandard;
-import org.calculator.materialprice.dto.SteelDto;
+import org.calculator.materialprice.dto.SteelGradeDto;
 import org.calculator.materialprice.dto.SteelStandardDto;
-import org.calculator.materialprice.repository.SteelGradesRepository;
+import org.calculator.materialprice.repository.SteelGradeRepository;
 import org.calculator.materialprice.repository.SteelStandardRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 public class SteelStandardService {
     private int count = 0;
     private final SteelStandardRepository steelStandardRepository;
-    private final SteelGradesRepository steelGradesRepository;
+    private final SteelGradeRepository steelGradeRepository;
 
     SteelStandardService(
             SteelStandardRepository steelStandardRepository,
-            SteelGradesRepository steelGradesRepository
+            SteelGradeRepository steelGradeRepository
     ){
         this.steelStandardRepository = steelStandardRepository;
-        this.steelGradesRepository = steelGradesRepository;
+        this.steelGradeRepository = steelGradeRepository;
     }
 
     /**
@@ -31,12 +31,12 @@ public class SteelStandardService {
      * @param dto DTO марки стали
      * @return Сущность SteelGrades
      */
-    private SteelGrades convertToEntity(SteelDto dto) {
+    private SteelGrades convertToEntity(SteelGradeDto dto) {
         SteelGrades entity = new SteelGrades();
 
         // Массив steelGrade преобразуем в строку (через запятую или первый элемент)
         // Предполагаем, что берем только первый элемент для простоты
-        entity.setSteelGradeName(dto.getSteelGrade().isEmpty() ? "" : dto.getSteelGrade().get(0));
+//        entity.setSteelGradeName(dto.getSteelGrade().isEmpty() ? "" : dto.getSteelGrade().get(0));
 
         entity.setDescription(dto.getDescription());
         // Массив substitutes преобразуем в строку
@@ -81,7 +81,7 @@ public class SteelStandardService {
                     System.out.println(count++ + " = " + val);
                 })
                 .map(this::convertToEntity)
-                .collect(Collectors.toList());
+                .toList();
 
         // 3. Установка обратной связи и сохранение (CascadeType.ALL в StandardSteel поможет)
         // StandardSteel должен иметь метод setGrades, который устанавливает обратную связь grade.setStandardSteel(this)
@@ -89,6 +89,12 @@ public class SteelStandardService {
 
         // 4. Сохранение родительской сущности
         return steelStandardRepository.save(standard);
+    }
+
+    public List<SteelStandardDto> getSteelStandard() {
+        return steelStandardRepository.findAll().stream()
+                .map(SteelStandardDto::new)
+                .collect(Collectors.toList());
     }
 
 

@@ -4,12 +4,14 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.calculator.materialprice.domain.SteelGrades;
 import org.calculator.materialprice.domain.CatalogWasherStandards;
+import org.calculator.materialprice.dto.SteelGradeDto;
 import org.calculator.materialprice.repository.SteelGradeRepository;
 import org.calculator.materialprice.repository.WasherStandardRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class SteelGradeService {
@@ -36,8 +38,16 @@ public class SteelGradeService {
         return repository.findBySteelGradeName(steelGrade);
     }
 
-    public List<SteelGrades> getAllSteelGrades() {
-        return repository.findAll();
+    public List<SteelGradeDto> getSteelGrades() {
+        return repository.findAll().stream()
+                .map(SteelGradeDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<SteelGradeDto> getWasherSteelGrades() {
+        return repository.findAllDependentWashers().stream()
+                .map(SteelGradeDto::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -55,5 +65,7 @@ public class SteelGradeService {
 
         return steelGradeRepository.save(steelGrade);
     }
+
+
 
 }

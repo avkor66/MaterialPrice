@@ -2,7 +2,6 @@ package org.calculator.materialprice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.*;
 
@@ -15,7 +14,6 @@ public class CatalogWasherStandards {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     private String standard;
     private String title;
     private String description;
@@ -42,11 +40,6 @@ public class CatalogWasherStandards {
     @Column(name = "washer_sizes")
     private Set<CatalogWasherSizes> washerSizes = new HashSet<>();
 
-    public void addWasherSizeToStandard(CatalogWasherSizes washerSize) {
-        this.washerSizes.add(washerSize);
-        washerSize.setWasherStandard(this);
-    }
-
     public CatalogWasherStandards(String standard, String title, String description, String type, String link, String file, String image) {
         this.standard = standard;
         this.title = title;
@@ -56,16 +49,11 @@ public class CatalogWasherStandards {
         this.file = file;
         this.image = image;
     }
-
-
-    public void addGrade(SteelGrades grade) {
+    public void addWasherSizeToStandard(CatalogWasherSizes washerSize) {
+        this.washerSizes.add(washerSize);
+        washerSize.setWasherStandard(this);
+    }
+    public void addGradeToStandard(SteelGrades grade) {
         this.grades.add(grade);
     }
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "washerStandardSize", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<CatalogWasherSizes> washerSize = new ArrayList<>();
-//
-//    @JsonIgnore
-//    @ManyToMany(mappedBy = "washerStandard")
-//    private Set<CatalogSteelGrades> steelGrade = new HashSet<>();
 }
