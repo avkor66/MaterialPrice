@@ -1,5 +1,6 @@
 package org.calculator.materialprice.service;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.calculator.materialprice.domain.ProductPrice;
 import org.calculator.materialprice.repository.ProductRepository;
@@ -35,5 +36,14 @@ public class ProductService {
 
     public List<ProductPrice> getProductsByHer(String productName, String dimensions, String steelGrade, String parameter) {
         return this.productRepository.findTopByProductNameAndDimensionsAndSteelGradeAndParameterOrderByPriceAsc(productName, dimensions, steelGrade, parameter);
+    }
+
+    public long countProducts() {
+        return this.productRepository.count();
+    }
+
+    @Transactional // Гарантирует выполнение операции в рамках транзакции
+    public void deleteAllProducts() {
+        productRepository.deleteAll();
     }
 }

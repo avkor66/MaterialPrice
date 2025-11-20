@@ -1,6 +1,10 @@
 package org.calculator.materialprice.service;
 
 import jakarta.transaction.Transactional;
+import org.calculator.materialprice.domain.CatalogWasherSizes;
+import org.calculator.materialprice.domain.CatalogWasherStandards;
+import org.calculator.materialprice.domain.SteelGrades;
+import org.calculator.materialprice.domain.SteelStandard;
 import org.calculator.materialprice.repository.SteelGradeRepository;
 import org.calculator.materialprice.repository.SteelStandardRepository;
 import org.calculator.materialprice.repository.WasherSizeRepository;
@@ -34,6 +38,15 @@ public class InitService {
             System.out.println("Данные уже записаны. Пропуск инициализации.");
             return;
         }
+
+
+
+
+
+
+
+
+
 
 
         System.out.println("Инициализация данных внутри транзакции.");

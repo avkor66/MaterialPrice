@@ -41,9 +41,21 @@ public class ProductController {
         return ResponseEntity.ok(page);
     }
 
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> deleteAllProductData() {
+        productService.deleteAllProducts();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("/product")
     public ResponseEntity<List<ProductPrice>> getProductsByProductName(@RequestParam(value = "name") String productName) {
         return new ResponseEntity<>(productService.getProductsByName(productName), HttpStatus.OK);
+    }
+
+    @GetMapping("/product/count")
+    public ResponseEntity<Long> countProductsByProductName() {
+        long count = productService.countProducts();
+        return new ResponseEntity<>(count, HttpStatus.OK);
     }
 
     @PostMapping("/upload-product-data")
