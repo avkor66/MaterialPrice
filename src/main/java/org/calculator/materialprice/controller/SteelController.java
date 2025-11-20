@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("steel")
@@ -37,7 +38,15 @@ public class SteelController {
     }
 
     @GetMapping("standard")
-    public ResponseEntity<List<SteelStandardDto>> getAllSteelStandard() {
+    public ResponseEntity<List<SteelStandardDto>> getAllSteelStandard(@RequestHeader Map<String, String> headers) {
+        // --- ЭТА ЧАСТЬ КОДА ВЫВОДИТ ВСЕ ЗАГОЛОВКИ В КОНСОЛЬ ---
+        System.out.println("--- НАЧАЛО ЗАГОЛОВКОВ ВХОДЯЩЕГО ЗАПРОСА ---");
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            // Выводит имя заголовка (ключ) и его значение
+            System.out.println("Header: " + entry.getKey() + " = " + entry.getValue());
+        }
+        System.out.println("--- КОНЕЦ ЗАГОЛОВКОВ ---");
+        // -----------------------------------------------------
         return new ResponseEntity<>(steelStandardService.getSteelStandard(), HttpStatus.OK);
     }
 
