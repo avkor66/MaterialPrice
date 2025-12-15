@@ -1,14 +1,8 @@
 package org.calculator.materialprice.service;
 
 import jakarta.transaction.Transactional;
-import org.calculator.materialprice.domain.CatalogWasherSizes;
-import org.calculator.materialprice.domain.CatalogWasherStandards;
-import org.calculator.materialprice.domain.SteelGrades;
-import org.calculator.materialprice.domain.SteelStandard;
-import org.calculator.materialprice.repository.SteelGradeRepository;
-import org.calculator.materialprice.repository.SteelStandardRepository;
-import org.calculator.materialprice.repository.WasherSizeRepository;
-import org.calculator.materialprice.repository.WasherStandardRepository;
+import org.calculator.materialprice.domain.*;
+import org.calculator.materialprice.repository.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,17 +12,29 @@ public class InitService {
     private final SteelGradeRepository steelGradeRepository;
     private final WasherStandardRepository washerStandardRepository;
     private final WasherSizeRepository washerSizeRepository;
+    private final BoltStandardRepository boltStandardRepository;
+    private final BoltSizeRepository boltSizeRepository;
+    private final NutStandardRepository nutStandardRepository;
+    private final NutSizeRepository nutSizeRepository;
 
     public InitService(
             SteelStandardRepository standardRepo,
             SteelGradeRepository gradesRepo,
             WasherSizeRepository washerSizeRepository,
-            WasherStandardRepository washerStandardRepository
+            WasherStandardRepository washerStandardRepository,
+            BoltStandardRepository boltStandardRepository,
+            BoltSizeRepository boltSizeRepository,
+            NutStandardRepository nutStandardRepository,
+            NutSizeRepository nutSizeRepository
     ) {
         this.steelStandardRepository = standardRepo;
         this.steelGradeRepository = gradesRepo;
         this.washerStandardRepository = washerStandardRepository;
         this.washerSizeRepository = washerSizeRepository;
+        this.boltStandardRepository = boltStandardRepository;
+        this.boltSizeRepository = boltSizeRepository;
+        this.nutStandardRepository = nutStandardRepository;
+        this.nutSizeRepository = nutSizeRepository;
     }
 
     @Transactional
@@ -38,13 +44,6 @@ public class InitService {
             System.out.println("Данные уже записаны. Пропуск инициализации.");
             return;
         }
-
-
-
-
-
-
-
 
 
 

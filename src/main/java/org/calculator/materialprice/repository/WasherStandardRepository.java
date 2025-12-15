@@ -9,5 +9,4 @@ import java.util.UUID;
 @Repository
 public interface WasherStandardRepository extends JpaRepository<CatalogWasherStandards, UUID> {
     CatalogWasherStandards findByStandard(String standard);
-
 }

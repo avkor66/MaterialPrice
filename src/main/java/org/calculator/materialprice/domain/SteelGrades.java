@@ -51,6 +51,23 @@ public class SteelGrades {
     )
     private Set<CatalogWasherStandards> washers = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "bolt_grade",
+            joinColumns = {@JoinColumn(name = "grade_id")},
+            inverseJoinColumns = {@JoinColumn(name = "bolt_id")}
+    )
+    private Set<CatalogBoltStandards> bolts = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "nut_grade",
+            joinColumns = {@JoinColumn(name = "grade_id")},
+            inverseJoinColumns = {@JoinColumn(name = "nut_id")}
+    )
+    private Set<CatalogNutStandards> nuts = new HashSet<>();
+
+
     public SteelGrades(String steelGradeName) {
         this.steelGradeName = steelGradeName;
     }

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class WashersPriceResponse {
+public class PriceResponse {
     private String species;
     private String steelGrade;
     private Boolean isSteelGradeAllowed;

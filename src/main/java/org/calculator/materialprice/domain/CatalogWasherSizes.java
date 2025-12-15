@@ -39,9 +39,4 @@ public class CatalogWasherSizes {
         this.purpose = purpose;
     };
 
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "washer_standard_id", nullable = false)
-//
-//    private CatalogWasherStandards washerStandardSize;
 }

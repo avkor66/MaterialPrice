@@ -1,11 +1,11 @@
 package org.calculator.materialprice.service;
 
-import org.calculator.materialprice.domain.CatalogWasherSizes;
-import org.calculator.materialprice.domain.CatalogWasherStandards;
+import org.calculator.materialprice.domain.CatalogBoltSizes;
+import org.calculator.materialprice.domain.CatalogBoltStandards;
 import org.calculator.materialprice.domain.ProductPrice;
-import org.calculator.materialprice.dto.WashersPriceRequest;
+import org.calculator.materialprice.dto.BoltPriceRequest;
 import org.calculator.materialprice.dto.PriceResponse;
-import org.calculator.materialprice.repository.WasherStandardRepository;
+import org.calculator.materialprice.repository.BoltStandardRepository;
 import org.calculator.materialprice.util.ParameterParser;
 import org.calculator.materialprice.util.WeightParser;
 import org.springframework.stereotype.Service;
@@ -14,30 +14,31 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-@Service
-public class ProcessingWasherService {
 
-    private String blank = "Круг";
+@Service
+public class ProcessingBoltService {
+
+    private String blank = "Шестигранник";
     private BigDecimal weightPerMM;
     private BigDecimal pricePerKg;
     private BigDecimal thousand = new BigDecimal("1000.00");
     private Boolean isSteelGradeAllowed;
     private BigDecimal blankLength;
-    private final WasherStandardRepository washerStandardRepository;
+
+    private final BoltStandardRepository boltStandardRepository;
     private final ProductService productService;
 
-    public ProcessingWasherService(WasherStandardRepository washerStandardRepository, ProductService productService) {
-        this.washerStandardRepository = washerStandardRepository;
+    public ProcessingBoltService(BoltStandardRepository boltStandardRepository, ProductService productService) {
+        this.boltStandardRepository = boltStandardRepository;
         this.productService = productService;
     }
-    public PriceResponse getProceedData(WashersPriceRequest request) {
+    public PriceResponse getProceedData(BoltPriceRequest request) {
 
         PriceResponse result = new PriceResponse();
 
-        CatalogWasherStandards rowStandard = washerStandardRepository.findByStandard(request.getStateStandard());
-        System.out.println("rowStandard" + rowStandard);
-        System.out.println(request.getStateStandard());
-        Optional<CatalogWasherSizes> foundWasherSize = rowStandard.getWasherSizes()
+        CatalogBoltStandards rowStandard = boltStandardRepository.findByStandard(request.getStateStandard());
+
+        Optional<CatalogBoltSizes> foundBoltSize = rowStandard.getBoltSizes()
                 .stream()
                 .peek(val -> System.out.println("Проверяемый элемент: " + val.getSize() + " = " + request.getDiameter() + " барабанная дробь..... " + val.getSize().equals(request.getDiameter())))
                 .filter(val -> val.getSize().equals(request.getDiameter()))
@@ -46,20 +47,24 @@ public class ProcessingWasherService {
         this.isSteelGradeAllowed = rowStandard.getGrades()
                 .stream()
                 .anyMatch(val -> {
-                    return val.getWashers().equals(request.getSteelGrade());
+                    return val.getBolts().equals(request.getSteelGrade());
                 });
 
-
-        if (foundWasherSize.isPresent()) {
-            BigDecimal outerDiameter = foundWasherSize.get().getOuter_diameter();
-            BigDecimal thickness = foundWasherSize.get().getThickness();
+//
+        if (foundBoltSize.isPresent()) {
+            BigDecimal outerDiameter = foundBoltSize.get().getSpanner_size();
+            BigDecimal currentLength = new BigDecimal(request.getLength().replaceAll("\\D+", "").trim());
+            BigDecimal thickness = foundBoltSize.get().getThread_pitch();
+            System.out.println(outerDiameter);
             // Получаем общую длину заготовки для всего заказа по формуле - {(толщина + рез) * количество}
             this.blankLength = thickness.add(BigDecimal.valueOf(request.getSawCut().doubleValue()))
+                    .add(currentLength)
                     .multiply(BigDecimal.valueOf(request.getQuantity().doubleValue()));
 
-//            List<ProductPrice> productPrice = productService.getProductsByHer(blank, outerDiameter.toString(), request.getSteelGrade(), blankLength.toString() );
-            List<ProductPrice> productPrice = productService.getProductsByName(blank);
-
+            System.out.println(this.blankLength);
+//
+////            List<ProductPrice> productPrice = productService.getProductsByHer(blank, outerDiameter.toString(), request.getSteelGrade(), blankLength.toString() );
+//            List<ProductPrice> productPrice = productService.getProductsByName(blank);
 //            for (ProductPrice product : productPrice) {
 //                // Получаем значение поля dimensions для текущего объекта
 //                String dimensions = product.getDimensions();
@@ -100,10 +105,11 @@ public class ProcessingWasherService {
                         }
                     }));
 
-
-
-
-
+                    System.out.println(productPriceTwo.isPresent());
+//                    System.out.println(productPriceTwo.get().getPrice());
+//
+//
+//
             System.out.println("Length: " + blankLength + " = " + thickness + " + " + request.getSawCut() + " * " + request.getQuantity());
             productPriceTwo.ifPresent(product -> {
                 List<WeightParser.ItemWeight> allWeights = WeightParser.parseWeights(product.getWeight());
@@ -126,7 +132,7 @@ public class ProcessingWasherService {
                             }
                         });
 
-
+//
 
                 System.out.println("Найден минимальный подходящий продукт:");
                 System.out.println("Название: " + product.getProductName());
@@ -142,7 +148,7 @@ public class ProcessingWasherService {
                 this.pricePerKg = this.pricePerKg.divide(this.thousand, 2, BigDecimal.ROUND_HALF_UP);
                 // Добавьте сюда другие поля, которые хотите вывести
             });
-            System.out.println(productPrice.toString());
+            System.out.println(productPriceTwo.toString());
         }
 
         result.setSpecies(request.getSpecies());
@@ -154,7 +160,6 @@ public class ProcessingWasherService {
         result.setBlankWeightPerMM(this.weightPerMM);
         result.setTotalPrice(result.getBlankWeightKg().multiply(result.getPricePerKg()));
 
-        System.out.println(isSteelGradeAllowed);
 
 
         System.out.println("request");
@@ -164,7 +169,8 @@ public class ProcessingWasherService {
         System.out.println(request.getStateStandard());
         System.out.println(request.getSteelGrade());
         System.out.println(request.getSawCut());
-
+        System.out.println(isSteelGradeAllowed);
+//
         System.out.println(result.getTotalPrice());
         System.out.println(result.getPricePerKg());
         System.out.println(result.getBlankWeightKg());
@@ -174,7 +180,3 @@ public class ProcessingWasherService {
         return result;
     }
 }
-
-
-
-

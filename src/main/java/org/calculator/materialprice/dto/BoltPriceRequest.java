@@ -5,8 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class WashersPriceRequest {
+public class BoltPriceRequest {
     private String species;
+    private String length;
     private String diameter;
     private String steelGrade;
     private Number quantity;

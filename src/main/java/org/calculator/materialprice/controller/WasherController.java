@@ -23,9 +23,9 @@ public class WasherController {
     private final WasherStandardService washerStandardService;
 
     public WasherController(
-            SteelGradeService steelGradeService,
-            WasherSizeService washerSizeService,
-            WasherStandardService washerStandardService
+        SteelGradeService steelGradeService,
+        WasherSizeService washerSizeService,
+        WasherStandardService washerStandardService
     ){
         this.steelGradeService = steelGradeService;
         this.washerSizeService = washerSizeService;
